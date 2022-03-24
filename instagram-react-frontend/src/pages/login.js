@@ -15,7 +15,7 @@ export default function Login() {
 	const isInvalid = password === "" || emailAddress === "";
 
 	const handleLogin = (e) => {
-		
+		e.preventDefalt();
 	};
 
 	const handleEmailChange = (e) => {
@@ -60,7 +60,7 @@ export default function Login() {
 							onChange={handlePasswordChange}
 							value={password}
 						/>
-						<button disabled={isInvalid} className='bg-blue-500 text-white w-full rounded h-8 font-bold'>Log In</button>
+						<button disabled={isInvalid} className='bg-blue-medium text-white w-full rounded h-8 font-bold'>Log In</button>
 					</form>
 				</div>
 				<div className='flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary'>
