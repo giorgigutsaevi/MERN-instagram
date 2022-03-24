@@ -24,7 +24,7 @@ module.exports = {
         primary: '#dbdbdb'
       },
       red: {
-        primary: '#ed4956'
+        primary: 'firebrick'
       }
     }
   },

@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import FirebaseContext from "../context/firebase";
+import { firebase } from "../lib/firebase"
 
 export default function Login() {
 	const history = useHistory();
-	const { firebase } = useContext(FirebaseContext);
 
 	const [emailAddress, setEmailAddress] = useState("");
 	const [password, setPassword] = useState("");
@@ -14,8 +13,15 @@ export default function Login() {
 
 	const isInvalid = password === "" || emailAddress === "";
 
-	const handleLogin = (e) => {
-		e.preventDefalt();
+	const handleLogin = (event) => {
+		event.preventDefault();
+		firebase.auth().signInWithEmailAndPassword(emailAddress, password)
+			.then(() => history.push("/")) 
+			.catch((error) => {
+				setEmailAddress("")
+				setPassword("")
+				setError(error.message)
+			})
 	};
 
 	const handleEmailChange = (e) => {
