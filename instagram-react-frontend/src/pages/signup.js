@@ -27,33 +27,56 @@ export default function Login() {
 		))
 	}
 
+	// checking if email exists in the database, if there's one, an array is returned.
+	const doesEmailExist = async (email) => {
+		const result = await firebase
+			.firestore()
+			.collection('users')
+			.where("emailAddress", '==', email)
+			.get()
+
+		return result.docs.map(user => user.data().length > 0)
+	}
+
 	const handleSignup = async (event) => {
 		event.preventDefault();
-		try {
-			const createdUser = await firebase.auth().createUserWithEmailAndPassword(formData.emailAddress, formData.password)
 
-			await firebase.firestore().collection("users").add({
-				userId: createdUser.user.uid,
-				username: formData.username.toLowerCase(),
-				fullName: formData.fullName,
-				emailAddress: formData.emailAddress.toLowerCase(),
-				following: [],
-				followers: [],
-				dateCreated: Date.now()
-			})
+		const isEmailTaken = await doesEmailExist(formData.emailAddress)
 
-		} catch (error) {
-			setFormData(prevState => (
-				{
-					...prevState,
-					username: "",
-					fullName: "",
-					emailAddress: "",
-					password: "",
-				}
-			))
-			setError(error.message)
+		if (!isEmailTaken.length) {
+			try {
+				const createdUser = await firebase.auth().createUserWithEmailAndPassword(formData.emailAddress, formData.password)
+
+				await firebase.firestore().collection("users").add({
+					userId: createdUser.user.uid,
+					username: formData.username.toLowerCase(),
+					fullName: formData.fullName,
+					emailAddress: formData.emailAddress.toLowerCase(),
+					following: [],
+					followers: [],
+					dateCreated: Date.now()
+				})
+				
+				// if successfully signed up, the user is redirected to the dashboard/feed page
+				history.push("/")
+
+			} catch (error) {
+				setFormData(prevState => (
+					{
+						...prevState,
+						username: "",
+						fullName: "",
+						emailAddress: "",
+						password: "",
+					}
+				))
+				setError(error.message)
+			}
+		} else{
+			setError("The email is already taken, please try another!")
 		}
+
+
 
 	};
 
