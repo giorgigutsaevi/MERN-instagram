@@ -16,10 +16,6 @@ export default function Login() {
 
 	const isInvalid = formData.password === "" || formData.emailAddress === "";
 
-	const handleSignup = (event) => {
-		event.preventDefault();
-
-	};
 
 	const handleChange = (e) => {
 		const { value, name } = e.target;
@@ -30,6 +26,36 @@ export default function Login() {
 			}
 		))
 	}
+
+	const handleSignup = async (event) => {
+		event.preventDefault();
+		try {
+			const createdUser = await firebase.auth().createUserWithEmailAndPassword(formData.emailAddress, formData.password)
+
+			await firebase.firestore().collection("users").add({
+				userId: createdUser.user.uid,
+				username: formData.username.toLowerCase(),
+				fullName: formData.fullName,
+				emailAddress: formData.emailAddress.toLowerCase(),
+				following: [],
+				followers: [],
+				dateCreated: Date.now()
+			})
+
+		} catch (error) {
+			setFormData(prevState => (
+				{
+					...prevState,
+					username: "",
+					fullName: "",
+					emailAddress: "",
+					password: "",
+				}
+			))
+			setError(error.message)
+		}
+
+	};
 
 	useEffect(() => {
 		document.title = "SignUp - Instagram";
