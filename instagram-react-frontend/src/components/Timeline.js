@@ -1,5 +1,5 @@
-
 const Timeline = () => {
+	
 	return (
 		<div>
 			<h1>Timeline Component</h1>
