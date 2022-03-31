@@ -2,11 +2,14 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom"
 import FirebaseContext from "../context/firebase";
+import UserContext from "../context/userContext";
 
 const Header = () => {
 
 	const { firebase } = useContext(FirebaseContext)
-	const user = 1;
+	const { user } = useContext(UserContext)
+
+	console.log(user);
 
 	return (
 		<header className="h-16 bg-white border-b mb-8">
@@ -23,7 +26,7 @@ const Header = () => {
 					</div>
 					<div className="text-gray text-center flex items-center align-items">
 						{user ? (
-							<> 
+							<>
 								<Link to="/">
 									<svg
 										className="w-8 mr-6 text-black-light cursor-pointer"
