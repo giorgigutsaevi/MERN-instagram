@@ -7,6 +7,7 @@ import useAuthListener from './hooks/useAuthentication';
 // setting up Lazy loading to avoid massive hit on the network
 const Login = lazy(() => import("./pages/login"))
 const Signup = lazy(() => import("./pages/signup"))
+const NotFound = lazy(() => import("./pages/notFound"))
 
 function App() {
   const { user } = useAuthListener();
@@ -19,6 +20,7 @@ function App() {
             <Route exact path="/" component={Dashboard}></Route>
             <Route path="/login" component={Login} ></Route>
             <Route path="/signup" component={Signup} ></Route>
+            <Route path="/not-found" component={NotFound} ></Route>
           </Switch>
         </Suspense>
       </Router>
