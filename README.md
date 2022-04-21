@@ -1,1 +1,1 @@
-# MERN-instagram
+# React Instagram clone
